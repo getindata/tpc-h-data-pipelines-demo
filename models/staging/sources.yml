@@ -1,0 +1,253 @@
+version: 2
+
+sources:
+  - name: tpch
+    description: "{{ doc('tpch') }}"
+
+    database: gid-dataops-labs
+    schema: tpch
+    tables:
+
+      - name: customer
+        description: "Raw 'customer' data."
+        columns:
+
+          - name: c_custkey
+            description: "Customer key id column provided in the raw 'customer' table. Primary key. The values in the column must be integer and unique"
+            tests:
+              - unique
+              - not_null
+
+          - name: c_name
+            description: "Customer name column provided in the raw 'customer' table. The values in the column must be string with length max of 25 marks"
+
+          - name: c_address
+            description: "Customer address column provided in the raw 'customer' table. The values in the column must be string with length max of 40 marks"
+
+          - name: c_nationkey
+            description: "Customer nationality key column provided in the raw 'customer' table. The values in the column must be integer. The column stands as the Foreign Key to n_nationkey in raw data - nations table."
+
+          - name: c_phone
+            description: "Customers' phone number column provided in the raw 'customer' table. The values in the column must be str with fixed size of 15 marks, where there are only numeric, 'plus' and 'dash' allowed."
+
+          - name: c_acctbal
+            description: "Customers' account balance column provided in the raw 'customer' table. The values in the column must be decimal."
+
+          - name: c_mktsegment
+            description: "Customers' market segment column provided in the raw 'customer' table. The values in the column must be string with fixed size of 10 characters."
+
+          - name: c_comment
+            description: "Comments column provided in the raw 'customer' table. The values in the column must be string with max size of 117 characters."
+
+      - name: lineitem
+        description: "Raw lineitem data. Primary key for the lineitem data: l_orderkey, l_linenumber."
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - l_orderkey
+                - l_linenumber
+
+        columns:
+
+          - name: l_orderkey
+            description: "Order key numbers in Lineitem table. Primary key first compound along with the l_linenumber. Foreign key referencing to o_orderkey in tpch.orders table. The values in the column must be integer positive or zero."
+
+          - name: l_partkey
+            description: "Part key numbers in Lineitem table. Foreign key first compound along with l_suppkey referencing accordingly to ps_partkey and ps_suppkey in tpch.partsupp table. The values in the column must be integer positive or zero."
+
+          - name: l_suppkey
+            description: "Supply key numbers in Lineitem table. Foreign key second compound along with l_partkey referencing accordingly to ps_partkey and ps_suppkey in tpch.partsupp table. The values in the column must be integer positive or zero."
+
+          - name: l_linenumber
+            description: "Line key numbers in Lineitem table. Second compound of the primary key along with the l_orderkey column in the Lineitem column. The values in the column must be integer positive or zero."
+
+          - name: l_quantity
+            description: "Quantity value column in Lineitem table. Primary key second compound along with the l_orderkey column in the Lineitem column. The values in the column must be positive, decimal"
+
+          - name: l_extendedprice
+            description: "Extended price column in Lineitem table. The meaning of the column remains unclear, no direct explanation proivided by the source owner, object under investigaton. The values in the column must be positive, decimal"
+
+          - name: l_discount
+            description: "Discount value in the Lineitem table. The values in the column must be positive, decimal, in the range between 0 and 1"
+
+          - name: l_tax
+            description: "Tax value in the Lineitem table. The values in the column must be positive, decimal"
+
+          - name: l_returnflag
+            description: "The return flag column in the Lineitem table. The values in the column must be str with fixed size of 1. No accepted values specified by the dataset provider."
+
+          - name: l_linestatus
+            description: "The line status in the Lineitem table. The values in the column must be str with fixed size of 1. No accepted values specified by the dataset provider."
+
+          - name: l_shipdate
+            description: "The shipping date in the Lineitem table. The values in the column must be expressed as YYYY-MM-DD"
+
+          - name: l_commitdate
+            description: "The commit date in the Lineitem table. Detailed desciption not provided by the source owner. The values in the column must be expressed as YYYY-MM-DD"
+
+          - name: l_receiptdate
+            description: "The receipt date in the Lineitem table. The values in the column must be expressed as YYYY-MM-DD"
+
+          - name: l_shipinstruct
+            description: "The shipping insturction text column in the Lineitem table. The values in the column must be string with fixed size of 25 characters. Detailed description not provided."
+
+          - name: l_shipmode
+            description: "The shipping mode text column in the Lineitem table. The values in the column must be string with fixed size of 10 characters. Detailed description not provided."
+
+          - name: l_comment
+            description: "The comment volumns for in the Lineitem table. The values in the column must be string with max size of 44 characters."
+
+      - name: nation
+        description: "Raw nation data. Primary key for the table: n_nationkey"
+        columns:
+
+          - name: n_nationkey
+            description: "Nation id column in the 'nation' table. Primary key. The values in the column must be positive, integer and unique. Table contains 25 unique nations"
+            tests:
+              - unique
+              - not_null
+
+          - name: n_name
+            description: "Nation name column in the 'nation' table. The values in the column must be string (text) with fixed size of 25"
+
+          - name: n_regionkey
+            description: "Region key id column in the 'nation' table. Foreign key to r_regionkey in tpch.region table. The values in the column must be integer."
+
+          - name: n_comment
+            description: "Nation comment column in the 'nation' table. The values in the column must be string (text) with size less than or qual 152."
+
+      - name: region
+        description: "Raw region data. Primary key: r_regionkey"
+        columns:
+
+          - name: r_regionkey
+            description: "Region id column in the 'region' table. Primary key. The values in the column must be positive, integer and unique. Table contains 5 unique regions"
+            tests:
+              - unique
+              - not_null
+
+          - name: r_name
+            description: "Region name column in the 'region' table. The values in the column must be string (text) with fixed size of 25"
+
+          - name: r_comment
+            description: "Region comment column in the 'region' table. The values in the column must be string (text) with size less than or qual 152."
+
+      - name: orders
+        description: "Raw orders data. Primary key: o_orderkey"
+        columns:
+
+          - name: o_orderkey
+            description: "Order key id column in the orders' table. Primary key. The values in the column must be positive, integer and unique."
+            tests:
+              - unique
+              - not_null
+
+          - name: o_custkey
+            description: "Customer key id column in the orders' table. Foreign key to c_customer in tpch.customer table. The values in the column must be positive, integer."
+
+          - name: o_orderstatus
+            description: "Order status column in the orders' table. The values in the column must be string (text) with size of 1."
+
+          - name: o_totalprice
+            description: "Total price column in the orders' table. The values in the columns must be positive, decimal."
+
+          - name: o_orderdate
+            description: "Order date column in the orders' table. The values in the column must be expressed as YYYY-MM-DD."
+
+          - name: o_orderpriority
+            description: "Order priority column in the orders' table. The values in the column must be string (text) with fixed size of 15"
+
+          - name: o_clerk
+            description: "Order clerk column in the orders' table. The values in the column must be string (text) with fixed size of 15"
+
+          - name: o_shippriority
+            description: "Ship priority column in the orders' table. The values in the column must be integer"
+
+          - name: o_comment
+            description: "Order comments column in the orders' table. The values in the column must be string with max size of 79."
+
+      - name: part
+        description: "Raw part data. Primary key: p_partkey"
+        columns:
+
+          - name: p_partkey
+            description: "Part key id column in the 'part' source table. Primary key. The values in the column must be int, unique, not null and positive."
+            tests:
+              - unique
+              - not_null
+
+          - name: p_name
+            description: "Part name column in the 'part' source table. The values in the column must be string with max size of 55"
+
+          - name: p_mfgr
+            description: "Parts manufacturer column in the 'part' source table. The values in the column must be string with fixed size of 25"
+
+          - name: p_brand
+            description: "Parts brand type column in the 'part' source table. The values in the column must be string with fixed size of 10"
+
+          - name: p_type
+            description: "Type of the part column in the 'part' source table. The values in the column must be string with max size of 25"
+
+          - name: p_size
+            description: "Part's size column in the 'part' source table. The values in the column must be integer, positive"
+
+          - name: p_container
+            description: "Part's container type column in the 'part' source table. The values in the column must be string with fixed size of 10"
+
+          - name: p_retailprice
+            description: "Part's retail price column in the 'part' source table. The values in the column must be decimal, positive"
+
+          - name: p_comment
+            description: "Part's comment column in the 'part' source table. The values in the column must be string with max size of 23"
+
+      - name: partsupp
+        description: "Raw supplied part data. Primary key: ps_partkey, ps_suppkey"
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - ps_partkey
+                - ps_suppkey
+        columns:
+
+          - name: ps_partkey
+            description: "Part key id column in the 'partsupp' source table. Primary key along with ps_suppkey. Foreign key to p_partkey. The values in the column must be int, not null and positive."
+
+          - name: ps_suppkey
+            description: "Parts supplier id column in the 'partsupp' source table. Primary key along with ps_partkey. Foreign key to s_suppkey. The values in the column must be int, not null and positive."
+
+          - name: ps_availqty
+            description: "Available part quantity column in the 'partsupp' source table. The values in the column must be integer, positive"
+
+          - name: ps_supplycost
+            description: "Parts supply cost column in the 'partsupp' source table. The values in the column must be decimal, positive"
+
+          - name: ps_comment
+            description: "Supplied part comment column in the 'partsupp' source table. The values in the column must be string with max size of 101"
+
+      - name: supplier
+        description: "Raw supplier data. Primary key: s_suppkey"
+        columns:
+
+          - name: s_suppkey
+            description: "Supplier key id column in the 'supplier' source table. Primary key. The values in the column must be int, unique, not null and positive."
+            tests:
+              - unique
+              - not_null
+              
+          - name: s_name
+            description: "Supplier name column in the 'supplier' source table. The values in the column must be str with fixed size of 25"
+
+          - name: s_address
+            description: "Supplier address column in the 'supplier' source table. The values in the column must be str with max size of 40"
+
+          - name: s_nationkey
+            description: "Supplier nation key id column in the 'supplier' source table. Foreign key to n_nationkey in nation source table. The values in the column must be int, not null and positive."
+
+          - name: s_phone
+            description: "Supplier phone number column in the 'supplier' source table. The values in the column must be str with fixed size of 15."
+
+          - name: s_acctbal
+            description: "Suppliers account balance column in the 'supplier' source table. The values in the column must be decimal, positive."
+
+          - name: s_comment
+            description: "Suppliers comment column in the 'supplier' source table. The values in the column must be string with max size of 101"

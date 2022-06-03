@@ -1,0 +1,8 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 0d48766
+_src_path: https://gitlab.com/getindata/dataops/pipeline-project-template.git
+gcp_project_name: gid-dataops-labs
+pipeline_owner: DataOps Team
+project_description: An example of a DP project
+project_name: hello_world_project
+schedule_interval: 0 */2 * * *

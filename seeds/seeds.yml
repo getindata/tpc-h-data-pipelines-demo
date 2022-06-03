@@ -1,0 +1,35 @@
+version: 2
+
+
+seeds:
+  - name: Country_PhoneCodes
+    description: "{{ doc('Country_PhoneCodes') }}"
+    columns:
+      - name: country
+        description: "Name of the country."
+      - name: phone_code
+        description: "Unique country's phone code."
+
+  - name: ISO_countries
+    description: "{{ doc('ISO_countries') }}"
+    columns:
+      - name: id
+        description: "Unique country ID number"
+      - name: alpha2
+        description: "Abbreviation - variant 1"
+      - name: alpha3
+        description: "Abbreviation - variant 2"
+      - name: name
+        description: "Name of the country"
+
+  - name: ISO_countries_with_additions
+    description: "{{ doc('ISO_countries_with_additions') }}"
+    columns:
+      - name: id
+        description: "Unique country ID number"
+      - name: alpha2
+        description: "Abbreviation - variant 1"
+      - name: alpha3
+        description: "Abbreviation - variant 2"
+      - name: name
+        description: "Name of the country"

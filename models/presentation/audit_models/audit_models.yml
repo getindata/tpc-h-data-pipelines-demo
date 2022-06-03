@@ -1,0 +1,395 @@
+version: 2
+
+models:
+  - name: dim_global_sales_opportunity_query_Q22
+    description: "{{ doc('dim_global_sales_opportunity_query_Q22') }}"
+    columns:
+      - name: cntrycode
+        description: "{{ doc('cntrycode') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: numcust
+        description: "{{ doc('numcust') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: totacctbal
+        description: "{{ doc('totacctbal') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+
+  - name: dim_important_stock_identification_Q11
+    description: "{{ doc('dim_important_stock_identification_Q11') }}"
+    columns:
+      - name: ps_partkey
+        description: "{{ doc('part_id') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: country_name
+        description: "{{ doc('supplier_country') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: value
+        description: "{{ doc('discrete_value_sum_over_part_and_country') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+        meta:
+          data_type: numeric
+          row_count: 1416.0
+          not_null_proportion: 1.0
+          distinct_proportion: 0.740112994
+          distinct_count: 1048.0
+          is_unique: false
+          min: '7874521.73'
+          max: '17538456.86'
+          avg: 9390534.07312853
+          std_dev_population: 1650977.2622347474
+          std_dev_sample: 1651560.543391343
+          profiled_at: '2022-03-09 14:33:19.127310+00'
+
+  - name: dim_minimum_cost_supplier_query_Q2
+    description: "{{ doc('dim_minimum_cost_supplier_query_Q2') }}"
+    columns:
+      - name: s_acctbal
+        description: "{{ doc('supplier_account') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+        meta:
+          data_type: numeric
+          row_count: 460.0
+          not_null_proportion: 1.0
+          distinct_proportion: 0.882608696
+          distinct_count: 406.0
+          is_unique: false
+          min: '-986.14'
+          max: '9938.53'
+          avg: 4528.908586957
+          std_dev_population: 3214.34663107666
+          std_dev_sample: 3217.8461929526316
+          profiled_at: '2022-03-09 14:40:38.561833+00'
+
+      - name: s_name
+        description: "{{ doc('supplier_name') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: n_name
+        description: "{{ doc('supplier_country') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+
+      - name: p_partkey
+        description: "{{ doc('part_id') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+
+      - name: p_mfgr
+        description: "{{ doc('part_manufacturer') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+
+      - name: s_address
+        description: "{{ doc('supplier_address') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: s_phone
+        description: "{{ doc('supplier_phone') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: s_comment
+        description: "{{ doc('supplier_comment') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+
+  - name: dim_parts_supplier_relationship_query_Q16
+    description: "{{ doc('dim_parts_supplier_relationship_query_Q16') }}"
+    columns:
+      - name: p_brand
+        description: "{{ doc('part_brand') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: p_type
+        description: "{{ doc('part_type') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: p_size
+        description: "{{ doc('part_size') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: supplier_cnt
+        description: "{{ doc('supplier_cnt') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+        meta:
+          data_type: int64
+          row_count: 19086.0
+          not_null_proportion: 1.0
+          distinct_proportion: 0.000785916
+          distinct_count: 15.0
+          is_unique: false
+          min: '3'
+          max: '28'
+          avg: 6.451587551084565
+          std_dev_population: 3.3639698173208163
+          std_dev_sample: 3.3640579474165158
+          profiled_at: '2022-03-09 14:43:09.621532+00'
+
+
+  - name: fct_lineitem_part_promotion_cases_Q14
+    description: "{{ doc('fct_lineitem_part_promotion_cases_Q14') }}"
+    columns:
+      - name: promo_revenue
+        description: ""
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+
+  - name: fct_shipping_modes_and_order_priority_Q12
+    description: "{{ doc('fct_shipping_modes_and_order_priority_Q12') }}"
+    columns:
+      - name: l_shipmode
+        description: "{{ doc('lineitem_ship_mode') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: high_line_count
+        description: "{{ doc('high_line_count') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: low_line_count
+        description: "{{ doc('low_line_count') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+
+  - name: fct_shipping_priority_query_Q3
+    description: "{{ doc('fct_shipping_priority_query_Q3') }}"
+    columns:
+      - name: l_orderkey
+        description: "{{ doc('order_id') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: revenue
+        description: "{{ doc('revenue') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+        meta:
+          data_type: numeric
+          row_count: 11620.0
+          not_null_proportion: 1.0
+          distinct_proportion: 0.999827883
+          distinct_count: 11618.0
+          is_unique: false
+          min: '850.518'
+          max: '406181.0111'
+          avg: 95978.592385034
+          std_dev_population: 69657.11657094704
+          std_dev_sample: 69660.11405859052
+          profiled_at: '2022-03-09 14:44:48.615548+00'
+
+      - name: o_orderdate
+        description: "{{ doc('order_date') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+
+      - name: o_shippriority
+        description: "{{ doc('orders_ship_priority') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+
+  - name: fct_top_supplier_querry_Q15
+    description: "{{ doc('fct_top_supplier_querry_Q15') }}"
+    columns:
+      - name: s_suppkey
+        description: "{{ doc('supplier_id') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: s_name
+        description: "{{ doc('supplier_name') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: s_address
+        description: "{{ doc('supplier_address') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: s_phone
+        description: "{{ doc('supplier_phone') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: total_revenue
+        description: "{{ doc('total_revenue') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+  - name: fct_volume_shipping_query_Q7
+    description: "{{ doc('fct_volume_shipping_query_Q7') }}"
+    columns:
+      - name: supp_nation
+        description: "{{ doc('supplier_country') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: cust_nation
+        description: "{{ doc('customer_country') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: string
+
+      - name: l_year
+        description: "{{ doc('lineitem_year') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+
+      - name: revenue
+        description: "{{ doc('total_revenue') }}"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+  - name: fct_general_report
+    description: >
+      The general report model providing basic customer inteligence KPIs like: total number of active / inactive customers,
+      total number of orders shipped and returned and their percentage ratios.
+
+    columns:
+      - name: total_customers
+        description: "Total number of registered customers."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: active_customers
+        description: "Number of customers who placed at least one order."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: active_ratio
+        description: "The ratio between acticve customers and total number of customers."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: total_orders
+        description: "Total number of orders placed by customers."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: shipped_orders
+        description: "Number of orders shipped to the customers."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+
+      - name: returned_orders
+        description: "Number of orders that have been returned."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: int64
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: return_ratio
+        description: "The ratio between returned and shipped orders."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: numeric
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false

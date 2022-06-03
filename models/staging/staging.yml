@@ -1,0 +1,239 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: "Raw 'customer' table subjected to minor transformation and cleaning"
+    columns:
+      - name: customer_id
+        description: "Aliased c_custkey from tpch database."
+
+      - name: customer_name
+        description: "Aliased c_name from tpch database."
+
+      - name: customer_address
+        description: "Aliased c_address from tpch database."
+
+      - name: customer_country_id
+        description: "Aliased c_nationkey from tpch database."
+
+      - name: customer_phone
+        description: "Aliased c_phone. Acceptable format: XX-XXX-XXX-XXXX"
+
+      - name: customer_account
+        description: "Aliased c_acctbal from tpch database."
+
+      - name: customer_market_segment
+        description: "Aliased c_mktsegment from tpch database."
+
+      - name: customer_comment
+        description: "Aliased c_comment from tpch database."
+
+
+  - name: stg_lineitem
+    description: "Raw 'lineitem' table subjected to minor transformation and cleaning"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - lineitem_line_id
+            - lineitem_order_id    
+    columns:
+      - name: lineitem_row_id
+        description: "Additional row id number column created as a base for incremental materialization."
+
+      - name: lineitem_order_id
+        description: "Aliased l_orderkey from tpch database."
+
+      - name: lineitem_part_id
+        description: "Aliased l_partkey from tpch database."
+
+      - name: lineitem_supplier_id
+        description: "Aliased l_suppkey from tpch database."
+
+      - name: lineitem_line_id
+        description: "Aliased l_linenumber from tpch database."
+
+      - name: lineitem_quantity
+        description: "Aliased l_quantity from tpch database."
+
+      - name: lineitem_extended_price
+        description: "Aliased l_extendedprice from tpch database."
+
+      - name: lineitem_discount
+        description: "Aliased l_discount from tpch database."
+
+      - name: lineitem_tax
+        description: "Aliased l_tax from tpch database."
+
+      - name: lineitem_return_flag
+        description: "Aliased l_returnflag from tpch database."
+
+      - name: lineitem_line_status
+        description: "Aliased l_linestatus from tpch database."
+
+      - name: lineitem_ship_date
+        description: "Aliased l_shipdate from tpch database."
+
+      - name: l_ship_date_quart
+        description: "Shipping date truncated into quarters"
+
+      - name: lineitem_commit_date
+        description: "Aliased l_commitdate from tpch database."
+
+      - name: lineitem_receipt_date
+        description: "Aliased l_receiptdate from tpch database."
+
+      - name: lineitem_shipinstruct
+        description: "Aliased l_shipinstruct from tpch database."
+
+      - name: lineitem_ship_mode
+        description: "Aliased l_shipmode from tpch database."
+
+      - name: lineitem_comment
+        description: "Aliased l_comment from tpch database."
+
+      - name: lineitem_year
+        description: "Shipping date truncated into year from tpch database."
+
+      - name: lineitem_volume
+        description: "{{ doc('lineitem_volume') }}"
+
+
+  - name: stg_nation
+    description: "Raw 'nation' table subjected to minor transformation and cleaning"
+    columns:
+      - name: country_id
+        description: "Aliased n_nationkey from tpch database."
+
+      - name: country_name
+        description: "Aliased n_name from tpch database."
+        tests:
+          - ISO_country_name_check
+          - not_null
+
+      - name: country_region_id
+        description: "Aliased n_regionkey from tpch database."
+
+      - name: country_comment
+        description: "Aliased n_comment from tpch database."
+
+
+  - name: stg_orders
+    description: "Raw 'orders' table subjected to minor transformation and cleaning"
+    columns:
+      - name: order_id
+        description: "Aliased o_orderkey from tpch database."
+
+      - name: orders_customer_id
+        description: "Aliased o_custkey from tpch database."
+
+      - name: order_status
+        description: "Aliased o_orderstatus from tpch database."
+
+      - name: orders_total_price
+        description: "Aliased o_totalprice from tpch database."
+
+      - name: order_date
+        description: "Aliased o_orderdate from tpch database."
+
+      - name: order_priority
+        description: "Aliased o_orderpriority from tpch database."
+
+      - name: orders_clerk
+        description: "Aliased o_clerk from tpch database."
+
+      - name: orders_ship_priority
+        description: "Aliased o_shippriority from tpch database."
+
+      - name: orders_comment
+        description: "Aliased o_comment from tpch database."
+
+
+  - name: stg_part
+    description: "Raw 'part' table subjected to minor transformation and cleaning"
+    columns:
+      - name: part_id
+        description: "Aliased p_partkey from tpch database."
+
+      - name: part_name
+        description: "Aliased p_name from tpch database."
+
+      - name: part_manufacturer
+        description: "Aliased p_mfgr from tpch database."
+
+      - name: part_brand
+        description: "Aliased p_brand from tpch database."
+
+      - name: part_type
+        description: "Aliased p_type from tpch database."
+
+      - name: part_size
+        description: "Aliased p_size from tpch database."
+
+      - name: part_container
+        description: "Aliased p_container from tpch database."
+
+      - name: part_retailprice
+        description: "Aliased p_retailprice from tpch database."
+
+      - name: part_comment
+        description: "Aliased p_comment from tpch database."
+
+
+  - name: stg_partsupp
+    description: "Raw 'part' table subjected to minor transformation and cleaning"
+    columns:
+      - name: partsupp_row_id
+        description: "Additional row id number column created as a base for incremental materialization."
+
+      - name: partsupp_part_id
+        description: "Aliased ps_partkey from tpch database."
+
+      - name: partsupp_supply_id
+        description: "Aliased ps_suppkey from tpch database."
+
+      - name: partsupp_available_quantity
+        description: "Aliased ps_availqty from tpch database."
+
+      - name: partsupp_supply_cost
+        description: "Aliased ps_supplycost from tpch database."
+
+      - name: partsupp_comment
+        description: "Aliased ps_comment from tpch database."
+
+
+  - name: stg_region
+    description: "Raw 'region' data subjecte to cleaning and minor transformations"
+    columns:
+      - name: region_id
+        description: "Aliased r_regionkey from tpch database."
+
+      - name: region_name
+        description: "Aliased r_name from tpch database."
+
+      - name: region_comment
+        description: "Aliased r_comment from tpch database."
+
+
+  - name: stg_supplier
+    description: "Raw supplier data subjected to cleaning and minor transformations"
+    columns:
+      - name: supplier_id
+        description: "Aliased s_suppkey from tpch database."
+
+      - name: supplier_name
+        description: "Aliased s_name from tpch database."
+
+      - name: supplier_address
+        description: "Aliased s_address from tpch database."
+
+      - name: supplier_country_id
+        description: "Aliased s_nationkey from tpch database."
+
+      - name: supplier_phone
+        description: "Aliased s_phone from tpch database."
+
+      - name: supplier_account_balance
+        description: "Aliased s_acctbal from tpch database."
+
+      - name: supplier_comment
+        description: "Aliased s_comment from tpch database."

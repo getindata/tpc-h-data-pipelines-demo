@@ -1,0 +1,6 @@
+version: 2
+
+
+macros:
+  - name: generate_schema_name
+    description: "{{ doc('generate_schema_name') }}"
