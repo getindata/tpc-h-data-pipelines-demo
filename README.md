@@ -6,7 +6,7 @@ when you work on your Data Pipelines project.
 You can see the contents of the repository and see how models and tests look like, so that the process of implementation
 in your project is easier.
 
-This is an advanced example of a project. If you want to see a simple example of a Data Pipelines project check [here](https://gitlab.com/getindata/dataops/first-steps-with-data-pipelines).
+This is an advanced example of a project. If you want to see a simple example of a Data Pipelines project check [here](https://github.com/getindata/first-steps-with-data-pipelines).
 
 ## Environment preparation
 
