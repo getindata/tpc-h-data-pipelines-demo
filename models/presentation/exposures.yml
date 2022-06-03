@@ -1,0 +1,22 @@
+version: 2
+
+exposures:
+
+  - name: demonstrative_dashboard
+    type: dashboard
+    maturity: medium
+    url: https://datastudio.google.com/s/mas46J2Fe5w
+    description: "{{ doc('dashboard_demo') }}"
+
+    depends_on:
+      - ref('dim_minimum_cost_supplier_query_Q2')
+      - ref('dim_minimum_cost_supplier_general_query_for_Q2')
+      - ref('fct_volume_shipping_query_Q7')
+      - ref('fct_shipping_for_Q7')
+      - ref('fct_top_supplier_querry_Q15')
+      - ref('fct_top_supplier_general_querry_Q15')
+      - ref('fct_general_report')
+
+    owner:
+      name: DataOps Team
+      email: michal.soszko@getindata.com

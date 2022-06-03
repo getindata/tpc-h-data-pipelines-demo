@@ -1,0 +1,326 @@
+version: 2
+
+models:
+  - name: dim_customer_without_orders_for_Q22
+    description: "{{ doc('dim_customer_without_orders_for_Q22') }}"
+    +tags: to_show
+    columns:
+      - name: customer_id
+        description: "{{ doc('customer_id') }}"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_phone
+        description: "{{ doc('customer_phone') }}"
+        tests:
+          - country_phone_code_check
+          - is_phone_number_valid
+
+      - name: customer_account
+        description: "{{ doc('customer_account') }}"
+
+      - name: region_name
+        description: "{{ doc('customer_region') }}"
+        tests:
+          - accepted_values:
+              values: ['AFRICA', 'AMERICA', 'ASIA', 'EUROPE', 'MIDDLE EAST']
+
+      - name: country_name
+        description: "{{ doc('customer_country') }}"
+        tests:
+          - ISO_country_name_check
+
+  - name: dim_important_stock_identification_for_Q11
+    description: "{{ doc('dim_important_stock_identification_for_Q11') }}"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - partsupp_part_id
+            - country_name
+            - discrete_value
+    columns:
+      - name: partsupp_part_id
+        description: "{{ doc('part_id') }}"
+
+      - name: country_name
+        description: "{{ doc('supplier_country') }}"
+
+      - name: discrete_value
+        description: "{{ doc('discrete_value') }}"
+
+      - name: value
+        description: "{{ doc('discrete_value_sum_over_part_and_country') }}"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+
+  - name: dim_minimum_cost_supplier_general_query_for_Q2
+    description: "{{ doc('dim_minimum_cost_supplier_general_query_for_Q2') }}"
+    columns:
+      - name: supplier_account_balance
+        description: "{{ doc('supplier_account') }}"
+
+      - name: supplier_name
+        description: "{{ doc('supplier_name') }}"
+
+      - name: country_name
+        description: "{{ doc('supplier_country') }}"
+        tests:
+          - ISO_country_name_check
+
+      - name: region_name
+        description: "{{ doc('customer_region') }}"
+        tests:
+          - accepted_values:
+              values: ['AFRICA', 'AMERICA', 'ASIA', 'EUROPE', 'MIDDLE EAST']
+
+      - name: part_id
+        description: "{{ doc('part_id') }}"
+
+      - name: part_size
+        description: "{{ doc('part_size') }}"
+
+      - name: part_type
+        description: "{{ doc('part_type') }}"
+
+      - name: partsupp_supply_cost
+        description: "{{ doc('partsupp_supply_cost') }}"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: part_manufacturer
+        description: "{{ doc('part_manufacturer') }}"
+
+      - name: supplier_address
+        description: "{{ doc('supplier_address') }}"
+
+      - name: supplier_phone
+        description: "{{ doc('supplier_phone') }}"
+        tests:
+          - country_phone_code_check
+
+      - name: supplier_comment
+        description: "{{ doc('supplier_comment') }}"
+
+      - name: min_supp_cost
+        description: "{{ doc('min_supp_cost') }}"
+
+
+  - name: dim_parts_supplier_relationship_query_for_Q16
+    description: "{{ doc('dim_parts_supplier_relationship_query_for_Q16') }}"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - part_brand
+            - part_type
+            - part_size
+    columns:
+      - name: part_brand
+        description: "{{ doc('part_brand') }}"
+
+      - name: part_type
+        description: "{{ doc('part_type') }}"
+
+      - name: part_size
+        description: "{{ doc('part_size') }}"
+
+      - name: supplier_cnt
+        description: "{{ doc('supplier_cnt') }}"
+
+
+  - name: fct_customer_orders_lineitem_for_Q3
+    description: "{{ doc('fct_customer_orders_lineitem_for_Q3') }}"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_date
+            - lineitem_commit_date
+            - lineitem_receipt_date
+            - lineitem_ship_date
+            - lineitem_volume
+            - lineitem_line_id
+
+    columns:
+      - name: lineitem_row_id
+        description: "{{ doc('lineitem_row_id') }}"
+
+      - name: order_id
+        description: "{{ doc('order_id') }}"
+
+      - name: lineitem_volume
+        description: "{{ doc('lineitem_volume') }}"
+
+      - name: order_date
+        description: "{{ doc('order_date') }}"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: lineitem_ship_date
+              inclusive: True
+
+      - name: orders_ship_priority
+        description: "{{ doc('orders_ship_priority') }}"
+
+      - name: customer_market_segment
+        description: "{{ doc('customer_market_segment') }}"
+        tests:
+          - accepted_values:
+              values: ['AUTOMOBILE', 'BUILDING', 'FURNITURE', 'HOUSEHOLD', 'MACHINERY']
+
+      - name: lineitem_ship_date
+        description: "{{ doc('lineitem_ship_date') }}"
+
+      - name: lineitem_ship_mode
+        description: "{{ doc('lineitem_ship_mode') }}"
+        tests:
+          - accepted_values:
+              values: ['AIR', 'SHIP', 'RAIL', 'MAIL', 'REG AIR', 'TRUCK', 'FOB']
+
+      - name: lineitem_commit_date
+        description: "{{ doc('lineitem_commit_date') }}"
+
+      - name: lineitem_receipt_date
+        description: "{{ doc('lineitem_receipt_date') }}"
+
+      - name: order_priority
+        description: "{{ doc('order_priority') }}"
+        tests:
+          - accepted_values:
+              values: ['1-URGENT', '2-HIGH', '3-MEDIUM', '4-NOT SPECIFIED', '5-LOW']
+
+      - name: lineitem_year
+        description: "{{ doc('lineitem_year') }}"
+
+      - name: lineitem_supplier_id
+        description: "{{ doc('lineitem_supplier_id') }}"
+
+      - name: customer_country
+        description: "{{ doc('customer_country') }}"
+
+      - name: lineitem_part_id
+        description: "{{ doc('part_id') }}"
+
+      - name: lineitem_extended_price
+        description: "{{ doc('lineitem_extended_price') }}"
+
+      - name: lineitem_discount
+        description: "{{ doc('lineitem_discount') }}"
+
+      - name: lineitem_line_id
+        description: "{{ doc('lineitem_line_id') }}"
+
+  - name: fct_lineitem_part_promotion_cases_for_Q14
+    description: "{{ doc('fct_lineitem_part_promotion_cases_for_Q14') }}"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - lineitem_ship_date
+            - part_type
+            - lineitem_volume
+            - is_promo
+            - lineitem_row_id
+    columns:
+      - name: lineitem_ship_date
+        description: "{{ doc('lineitem_ship_date') }}"
+
+      - name: part_type
+        description: "{{ doc('part_type') }}"
+
+      - name: lineitem_row_id
+        description: "{{ doc('lineitem_row_id') }}"
+
+      - name: lineitem_volume
+        description: "{{ doc('lineitem_volume') }}"
+
+      - name: is_promo
+        description: "{{ doc('is_promo') }}"
+
+      - name: part_id
+        description: "{{ doc('part_id') }}"
+
+
+  - name: fct_shipping_for_Q7
+    description: "{{ doc('fct_shipping_for_Q7') }}"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - lineitem_line_id
+            - order_id
+    columns:
+      - name: supplier_country
+        description: "{{ doc('supplier_country') }}"
+
+      - name: customer_country
+        description: "{{ doc('customer_country') }}"
+
+      - name: lineitem_year
+        description: "{{ doc('lineitem_year') }}"
+
+      - name: lineitem_volume
+        description: "{{ doc('lineitem_volume') }}"
+
+      - name: lineitem_line_id
+        description: "{{ doc('lineitem_line_id') }}"
+
+      - name: order_id
+        description: "{{ doc('order_id') }}"
+
+      - name: lineitem_ship_date
+        description: "{{ doc('lineitem_ship_date') }}"
+
+  - name: fct_shipping_modes_and_order_priority_general_for_Q12
+    description: "{{ doc('fct_shipping_modes_and_order_priority_general_for_Q12') }}"
+    columns:
+      - name: lineitem_ship_mode
+        description: "{{ doc('lineitem_ship_mode') }}"
+
+      - name: lineitem_ship_date
+        description: "{{ doc('lineitem_ship_date') }}"
+
+      - name: lineitem_commit_date
+        description: "{{ doc('lineitem_commit_date') }}"
+
+      - name: lineitem_receipt_date
+        description: "{{ doc('lineitem_receipt_date') }}"
+
+      - name: order_priority
+        description: "{{ doc('order_priority') }}"
+
+      - name: high_line
+        description: "{{ doc('high_line') }}"
+
+      - name: low_line
+        description: "{{ doc('low_line') }}"
+
+
+  - name: fct_top_supplier_general_querry_Q15
+    description: "{{ doc('fct_top_supplier_general_querry_Q15') }}"
+    columns:
+      - name: supplier_id
+        description: "{{ doc('supplier_id') }}"
+
+      - name: supplier_name
+        description: "{{ doc('supplier_name') }}"
+
+      - name: supplier_address
+        description: "{{ doc('supplier_address') }}"
+
+      - name: supplier_phone
+        description: "{{ doc('supplier_phone') }}"
+
+      - name: lineitem_row_id
+        description: "{{ doc('lineitem_row_id') }}"
+
+      - name: shipping_date
+        description: "{{ doc('lineitem_ship_date') }}"
+
+      - name: total_revenue
+        description: "{{ doc('total_revenue') }}"
+
+      - name: max_total_revenue
+        description: "{{ doc('max_total_revenue') }}"

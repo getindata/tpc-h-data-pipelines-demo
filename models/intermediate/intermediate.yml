@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: dim_country_region
+    description: "{{ doc('dim_country_region') }}"
+
+  - name: dim_customer_country_region
+    description: "{{ doc('dim_customer_country_region') }}"
+
+  - name: dim_partsupp_part
+    description: "{{ doc('dim_partsupp_part') }}"
+
+  - name: dim_supplier_country_region
+    description: "{{ doc('dim_supplier_country_region') }}"
+
+  - name: dim_supplier_partsupp_nation
+    description: "{{ doc('dim_supplier_partsupp_nation') }}"
+
+  - name: fct_lineitem_part
+    description: "{{ doc('fct_lineitem_part') }}"
