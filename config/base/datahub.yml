@@ -23,7 +23,7 @@ transformers:
   - type: "simple_add_dataset_tags"
     config:
       tag_urns:
-        - "urn:li:tag:hello_world_project"
+        - "urn:li:tag:tpc_h_project"
   - type: "simple_add_dataset_ownership"
     config:
       owner_urns:

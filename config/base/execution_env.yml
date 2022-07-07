@@ -1,5 +1,5 @@
 image:
-  repository: europe-central2-docker.pkg.dev/gid-dataops-labs/composer-dags/hello_world_project
+  repository: europe-central2-docker.pkg.dev/gid-dataops-labs/composer-dags/tpc_h_project
   tag: <IMAGE_TAG>
 
 type: k8s
